@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import cast
+
 try:
     import pygame
 except ImportError:  # pragma: no cover - only used when pygame is absent locally.
@@ -9,7 +11,7 @@ except ImportError:  # pragma: no cover - only used when pygame is absent locall
 from core.constants import FPS, HEIGHT, WIDTH, WINDOW_TITLE
 from core.scene import StoryRoomScene
 from core.scene_manager import SceneManager
-from story.scenes import childhood_piano_room
+from story.scenes import DEFAULT_SCENE_ID, get_scene
 
 
 def _initial_window_size() -> tuple[int, int]:
@@ -29,18 +31,20 @@ def _initial_window_size() -> tuple[int, int]:
 
 
 def run() -> int:
-    pygame.init()
+    _ = pygame.init()
     try:
         pygame.display.set_caption(WINDOW_TITLE)
         screen = pygame.display.set_mode(_initial_window_size(), pygame.RESIZABLE)
         clock = pygame.time.Clock()
-        scene_manager = SceneManager(StoryRoomScene(childhood_piano_room()))
+        scene_manager = SceneManager(StoryRoomScene(get_scene(DEFAULT_SCENE_ID)))
 
         while scene_manager.running:
             dt = clock.tick(FPS) / 1000.0
             for event in pygame.event.get():
                 if event.type == pygame.VIDEORESIZE:
-                    screen = pygame.display.set_mode((max(640, event.w), max(360, event.h)), pygame.RESIZABLE)
+                    width = cast(int, event.w)
+                    height = cast(int, event.h)
+                    screen = pygame.display.set_mode((max(640, width), max(360, height)), pygame.RESIZABLE)
                 if not scene_manager.handle_event(event):
                     break
             if not scene_manager.running:
