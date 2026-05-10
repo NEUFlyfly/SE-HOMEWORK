@@ -47,7 +47,7 @@ class CharacterAnimator:
 
     @classmethod
     def _load_frames(cls, config: CharacterAnimationConfig) -> dict[DirectionName, tuple[pygame.Surface, ...]]:
-        character_dir = BASE_DIR / "assets" / "images" / config.name
+        character_dir = BASE_DIR / "assets" / "character" / config.name
         loaded: dict[DirectionName, tuple[pygame.Surface, ...]] = {}
         for direction in cls.directions:
             frames: list[pygame.Surface] = []
