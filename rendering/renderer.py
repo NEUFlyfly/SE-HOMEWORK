@@ -91,7 +91,7 @@ class RoomRenderer:
                 pygame.draw.rect(surface, color, (x, y, tile, tile))
                 pygame.draw.rect(surface, (178, 127, 78), (x, y, tile, tile), 1)
 
-        rug = pygame.Rect(396, 356, 218, 118)
+        rug = pygame.Rect(366, 326, 218, 118)
         pygame.draw.rect(surface, COLORS["red_dark"], rug, border_radius=4)
         pygame.draw.rect(surface, COLORS["red"], rug.inflate(-12, -12), border_radius=4)
         pygame.draw.rect(surface, COLORS["gold"], rug.inflate(-30, -30), 4, border_radius=4)
@@ -101,8 +101,8 @@ class RoomRenderer:
     def _draw_wall_details(self, surface: pygame.Surface, furniture: list[Furniture]) -> None:
         pygame.draw.rect(surface, COLORS["wood_light"], (122, 94, 78, 42), border_radius=2)
         pygame.draw.rect(surface, COLORS["ink"], (122, 94, 78, 42), 3, border_radius=2)
-        draw_text(surface, "练琴日程", (130, 104), self.fonts.small, COLORS["paper"])
-        draw_text(surface, "1 2 3 4", (132, 119), self.fonts.small, (231, 205, 162))
+        draw_text(surface, "练琴日程", (126, 95), self.fonts.small, COLORS["paper"])
+        draw_text(surface, "1  2  3  4", (126, 110), self.fonts.small, (231, 205, 162))
 
         window = next((item for item in furniture if item.kind == "window"), None)
         if window is None:
@@ -173,7 +173,7 @@ class RoomRenderer:
         draw_panel(surface, pygame.Rect(574, 18, 360, 48), alpha=210)
         draw_text(surface, hint, (592, 31), self.fonts.small, COLORS["paper"])
 
-        panel = pygame.Rect(82, 536, 796, 78)
+        panel = pygame.Rect(82, 566, 796, 68)
         draw_panel(surface, panel, alpha=232)
         text = active.prompt if active else dialogue.text
         text_pos = (130, 558) if active else (110, 558)

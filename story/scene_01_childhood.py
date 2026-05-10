@@ -8,15 +8,15 @@ from core.models import Furniture, Interaction, SceneData
 def childhood_piano_room() -> SceneData:
     piano_rect = pygame.Rect(584, 170, 206, 84)
     window_rect = pygame.Rect(392, 92, 174, 74)
-    cabinet_rect = pygame.Rect(112, 168, 128, 96)
-    fridge_rect = pygame.Rect(806, 178, 64, 128)
-    microwave_rect = pygame.Rect(820, 136, 44, 36)
-    desk_rect = pygame.Rect(270, 248, 126, 112)
-    chair_rect = pygame.Rect(430, 314, 54, 72)
-    clean_desk_rect = pygame.Rect(246, 396, 142, 84)
-    bed_rect = pygame.Rect(116, 414, 100, 120)
-    sofa_rect = pygame.Rect(596, 428, 148, 92)
-    little_table_rect = pygame.Rect(782, 404, 58, 76)
+    cabinet_rect = pygame.Rect(112, 148, 118, 116)
+    fridge_rect = pygame.Rect(242, 138, 64, 128)
+    microwave_rect = pygame.Rect(322, 186, 44, 36)
+    desk_rect = pygame.Rect(400, 288, 146, 142)
+    chair_rect = pygame.Rect(260, 304, 54, 82)
+    clean_desk_rect = pygame.Rect(620, 276, 142, 54)
+    bed_rect = pygame.Rect(100, 300, 150, 190)
+    sofa_rect = pygame.Rect(660,370, 148, 92)
+    little_table_rect = pygame.Rect(809, 180, 58, 76)
 
     furniture = (
         Furniture(
