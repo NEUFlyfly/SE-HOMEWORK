@@ -1,8 +1,77 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 import pygame
 
-from core.models import Furniture, Interaction, SceneData
+from core.constants import COLORS, ROOM_RECT
+from core.models import Furniture, Interaction, SceneData, SceneFontBook
+from rendering.ui import draw_text
+
+
+def draw_childhood_background(
+    surface: pygame.Surface,
+    furniture: Sequence[Furniture],
+    fonts: SceneFontBook,
+) -> None:
+    surface.fill((34, 30, 33))
+    _draw_room_shell(surface)
+    _draw_floor(surface)
+    _draw_wall_details(surface, furniture, fonts)
+    _draw_foreground_details(surface)
+
+
+def _draw_room_shell(surface: pygame.Surface) -> None:
+    outer = ROOM_RECT.inflate(28, 28)
+    pygame.draw.rect(surface, COLORS["wood_dark"], outer, border_radius=4)
+    pygame.draw.rect(surface, COLORS["wall"], ROOM_RECT, border_radius=2)
+    pygame.draw.rect(surface, COLORS["ink"], outer, 4, border_radius=4)
+    pygame.draw.rect(surface, COLORS["wall_dark"], (ROOM_RECT.x, ROOM_RECT.y, ROOM_RECT.width, 96))
+    pygame.draw.rect(surface, COLORS["wood_dark"], (ROOM_RECT.x, ROOM_RECT.y + 94, ROOM_RECT.width, 8))
+
+
+def _draw_floor(surface: pygame.Surface) -> None:
+    floor = pygame.Rect(ROOM_RECT.x, ROOM_RECT.y + 102, ROOM_RECT.width - 40, ROOM_RECT.height - 122)
+    pygame.draw.rect(surface, COLORS["floor_a"], floor)
+    tile = 32
+    for y in range(floor.y, floor.bottom, tile):
+        for x in range(floor.x, floor.right, tile):
+            color = COLORS["floor_b"] if (x // tile + y // tile) % 2 else COLORS["floor_a"]
+            pygame.draw.rect(surface, color, (x, y, tile, tile))
+            pygame.draw.rect(surface, (178, 127, 78), (x, y, tile, tile), 1)
+
+    rug = pygame.Rect(366, 326, 218, 118)
+    pygame.draw.rect(surface, COLORS["red_dark"], rug, border_radius=4)
+    pygame.draw.rect(surface, COLORS["red"], rug.inflate(-12, -12), border_radius=4)
+    pygame.draw.rect(surface, COLORS["gold"], rug.inflate(-30, -30), 4, border_radius=4)
+    for x in range(rug.x + 26, rug.right - 20, 22):
+        pygame.draw.circle(surface, COLORS["cream"], (x, rug.centery), 3)
+
+
+def _draw_wall_details(surface: pygame.Surface, furniture: Sequence[Furniture], fonts: SceneFontBook) -> None:
+    pygame.draw.rect(surface, COLORS["wood_light"], (122, 94, 78, 42), border_radius=2)
+    pygame.draw.rect(surface, COLORS["ink"], (122, 94, 78, 42), 3, border_radius=2)
+    draw_text(surface, "练琴日程", (126, 95), fonts.small, COLORS["paper"])
+    draw_text(surface, "1  2  3  4", (126, 110), fonts.small, (231, 205, 162))
+
+    window = next((item for item in furniture if item.kind == "window"), None)
+    if window is None:
+        return
+
+    frame = window.rect
+    pygame.draw.rect(surface, COLORS["wood_dark"], frame.inflate(10, 10), border_radius=3)
+    pygame.draw.rect(surface, COLORS["glass"], frame, border_radius=2)
+    pygame.draw.circle(surface, (249, 199, 112), (frame.x + 26, frame.y + 20), 12)
+    pygame.draw.line(surface, COLORS["glass_light"], (frame.x + 10, frame.y + 12), (frame.x + 76, frame.y + 12), 4)
+    pygame.draw.line(surface, COLORS["glass_light"], (frame.x + 94, frame.y + 12), (frame.x + 164, frame.y + 12), 4)
+    pygame.draw.line(surface, COLORS["wood_dark"], frame.midtop, frame.midbottom, 5)
+    pygame.draw.line(surface, COLORS["wood_dark"], frame.midleft, frame.midright, 5)
+    pygame.draw.rect(surface, COLORS["ink"], frame.inflate(10, 10), 3, border_radius=3)
+
+
+def _draw_foreground_details(surface: pygame.Surface) -> None:
+    pygame.draw.rect(surface, COLORS["wood_dark"], (ROOM_RECT.centerx - 44, ROOM_RECT.bottom - 28, 88, 24))
+    pygame.draw.rect(surface, COLORS["gold"], (ROOM_RECT.centerx - 10, ROOM_RECT.bottom - 22, 20, 8), border_radius=2)
 
 
 def childhood_piano_room() -> SceneData:
@@ -158,5 +227,6 @@ def childhood_piano_room() -> SceneData:
         title="人生记忆回廊 · 童年 · 老式琴房",
         spawn=(492, 404),
         furniture=furniture,
+        draw_background=draw_childhood_background,
         initial_dialogue="靠近家具后按 Space 查看童年的记忆。",
     )
