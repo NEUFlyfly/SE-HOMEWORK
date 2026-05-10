@@ -130,8 +130,13 @@ class RoomRenderer:
         draw_text(surface, "收集童年的声音", (panel.x + 36, panel.y + 52), self.fonts.small, (231, 205, 162))
 
         top = panel.y + 78
+        bottom = panel.bottom - 34
+        total = len(clue_order)
         for index, label in enumerate(clue_order):
-            y = top + index * 38
+            if total <= 1:
+                y = top
+            else:
+                y = top + round(index * ((bottom - top) / (total - 1)))
             collected = label in collected_clues
             color = COLORS["amber"] if collected else (118, 91, 71)
             pygame.draw.circle(surface, color, (panel.x + 34, y), 8 if collected else 5)

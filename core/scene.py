@@ -94,7 +94,12 @@ class StoryRoomScene:
 
     def _growth_slot_center(self, slot_index: int) -> tuple[int, int]:
         top = GROWTH_PANEL_RECT.y + 78
-        return (GROWTH_PANEL_RECT.x + 34, top + slot_index * 38)
+        bottom = GROWTH_PANEL_RECT.bottom - 34
+        total = len(self.clue_order)
+        if total <= 1:
+            return (GROWTH_PANEL_RECT.x + 34, top)
+        y = top + round(slot_index * ((bottom - top) / (total - 1)))
+        return (GROWTH_PANEL_RECT.x + 34, y)
 
     def _update_clue_sparks(self, dt: float) -> None:
         for spark in self.clue_sparks:
